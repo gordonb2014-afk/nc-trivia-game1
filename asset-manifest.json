@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/nc-trivia-game1/static/css/main.93a0497a.css",
+    "main.js": "/nc-trivia-game1/static/js/main.4d9cd58f.js",
+    "static/js/453.0c6b3fd2.chunk.js": "/nc-trivia-game1/static/js/453.0c6b3fd2.chunk.js",
+    "index.html": "/nc-trivia-game1/index.html",
+    "main.93a0497a.css.map": "/nc-trivia-game1/static/css/main.93a0497a.css.map",
+    "main.4d9cd58f.js.map": "/nc-trivia-game1/static/js/main.4d9cd58f.js.map",
+    "453.0c6b3fd2.chunk.js.map": "/nc-trivia-game1/static/js/453.0c6b3fd2.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.93a0497a.css",
+    "static/js/main.4d9cd58f.js"
+  ]
+}
