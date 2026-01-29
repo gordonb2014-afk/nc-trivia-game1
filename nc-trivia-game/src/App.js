@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const NorthCarolinaTrivia = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState(0); // Now tracks dollar amounts
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -14,134 +14,138 @@ const NorthCarolinaTrivia = () => {
   const [wagerSet, setWagerSet] = useState(false);
   const [finalAnswer, setFinalAnswer] = useState(null);
 
+  // Helper function to convert value string to number (e.g., "$800" -> 800)
+  const getValueAmount = (valueString) => {
+    return parseInt(valueString.replace('$', '').replace(',', ''));
+
   const questions = [
     {
-      category: "COLONIAL HISTORY",
+      category: "COLONIAL GOVERNORS",
       value: "$800",
-      clue: "In 1587, this colony on Roanoke Island mysteriously vanished, leaving only the word 'CROATOAN' carved into a post",
-      answer: "What is the Lost Colony?",
+      clue: "This colonial governor, who served from 1765-1771, built an elaborate palace in New Bern that became the colonial capital",
+      answer: "Who is William Tryon?",
       options: [
-        "What is Jamestown?",
-        "What is the Lost Colony?",
-        "What is Plymouth?",
-        "What is New Bern?"
+        "Who is Arthur Dobbs?",
+        "Who is William Tryon?",
+        "Who is Gabriel Johnston?",
+        "Who is Josiah Martin?"
       ],
       correct: 1
     },
     {
-      category: "CIVIL WAR",
+      category: "ANTEBELLUM NORTH CAROLINA",
       value: "$1000",
-      clue: "This March 1865 battle was the largest fought in North Carolina and the last major Confederate offensive of the war",
-      answer: "What is the Battle of Bentonville?",
+      clue: "This 1771 uprising by backcountry farmers against colonial officials ended with a decisive defeat at the Battle of Alamance",
+      answer: "What is the Regulator Movement?",
       options: [
-        "What is the Battle of Fort Fisher?",
-        "What is the Battle of Averasboro?",
-        "What is the Battle of Bentonville?",
-        "What is the Battle of Wyse Fork?"
+        "What is Bacon's Rebellion?",
+        "What is Shays' Rebellion?",
+        "What is the Regulator Movement?",
+        "What is the Whiskey Rebellion?"
       ],
       correct: 2
     },
     {
-      category: "NATIVE AMERICANS",
+      category: "CHEROKEE NATION",
       value: "$800",
-      clue: "This Native American of the Croatan tribe helped maintain peace between colonists and indigenous peoples in the 1580s",
-      answer: "Who is Manteo?",
+      clue: "This Cherokee leader created a syllabary for the Cherokee language in the early 19th century, making written communication possible for his people",
+      answer: "Who is Sequoyah?",
       options: [
-        "Who is Pocahontas?",
-        "Who is Manteo?",
-        "Who is Squanto?",
-        "Who is Sacagawea?"
+        "Who is John Ross?",
+        "Who is Sequoyah?",
+        "Who is Attakullakulla?",
+        "Who is Junaluska?"
       ],
       correct: 1
     },
     {
-      category: "LITERATURE",
+      category: "NC UNIVERSITY SYSTEM",
       value: "$1200",
-      clue: "This Asheville native won the Pulitzer Prize for Fiction in 1929 for his novel 'Look Homeward, Angel'",
-      answer: "Who is Thomas Wolfe?",
+      clue: "Founded in 1789 and chartered in 1795, this institution claims to be the first public university in the United States to admit students",
+      answer: "What is the University of North Carolina at Chapel Hill?",
       options: [
-        "Who is O. Henry?",
-        "Who is Thomas Wolfe?",
-        "Who is Reynolds Price?",
-        "Who is William Styron?"
+        "What is Duke University?",
+        "What is the University of North Carolina at Chapel Hill?",
+        "What is Wake Forest University?",
+        "What is Davidson College?"
       ],
       correct: 1
     },
     {
-      category: "GEOGRAPHY",
+      category: "NC WATERWAYS",
       value: "$1000",
-      clue: "At 5,946 feet, this mountain in the Great Smokies marks the highest point on the entire Appalachian Trail",
-      answer: "What is Clingmans Dome?",
+      clue: "This narrow waterway along the coast, part of the Intracoastal Waterway, separates the Outer Banks from the mainland",
+      answer: "What is the Albemarle and Pamlico Sound?",
       options: [
-        "What is Mount Mitchell?",
-        "What is Grandfather Mountain?",
-        "What is Clingmans Dome?",
-        "What is Mount LeConte?"
+        "What is the Cape Fear River?",
+        "What is Currituck Sound?",
+        "What is the Albemarle and Pamlico Sound?",
+        "What is the Neuse River?"
       ],
       correct: 2
     },
     {
-      category: "CIVIL RIGHTS",
+      category: "RECONSTRUCTION ERA",
       value: "$1000",
-      clue: "On February 1, 1960, four African American college students staged a sit-in at a Woolworth's lunch counter in this Piedmont city",
-      answer: "What is Greensboro?",
+      clue: "In 1898, this port city experienced a violent coup d'état that overthrew its biracial Fusionist government",
+      answer: "What is Wilmington?",
       options: [
+        "What is Raleigh?",
         "What is Charlotte?",
-        "What is Durham?",
-        "What is Greensboro?",
-        "What is Winston-Salem?"
+        "What is Wilmington?",
+        "What is Greensboro?"
       ],
       correct: 2
     },
     {
-      category: "ARCHITECTURE",
+      category: "HISTORIC PRESERVATION",
       value: "$1200",
-      clue: "George Vanderbilt's 250-room French Renaissance chateau near Asheville, completed in 1895, is America's largest privately-owned home",
-      answer: "What is Biltmore Estate?",
+      clue: "This 1770 Georgian-style residence in New Bern served as the colonial and early state capitol and has been meticulously restored",
+      answer: "What is Tryon Palace?",
       options: [
-        "What is Reynolda House?",
-        "What is Duke Mansion?",
         "What is Biltmore Estate?",
-        "What is Tryon Palace?"
+        "What is the Governor's Mansion?",
+        "What is Tryon Palace?",
+        "What is Old Salem?"
       ],
       correct: 2
     },
     {
-      category: "TECHNOLOGY",
+      category: "NC AGRICULTURE",
       value: "$800",
-      clue: "This Research Triangle Park company, founded in 1980, became one of the world's largest biotechnology firms and developed drugs like Enbrel",
-      answer: "What is Biogen (or Glaxo)?",
+      clue: "North Carolina leads the nation in production of this crop, which has been central to the state's economy since colonial times",
+      answer: "What is tobacco?",
       options: [
-        "What is IBM?",
-        "What is Biogen (or Glaxo)?",
-        "What is Cisco?",
-        "What is Nortel?"
+        "What is cotton?",
+        "What is tobacco?",
+        "What is corn?",
+        "What is soybeans?"
       ],
       correct: 1
     },
     {
-      category: "MUSIC",
+      category: "SPORTS LEGENDS",
       value: "$1000",
-      clue: "Born in Wadesboro in 1933, this 'High Priestess of Soul' sang 'Mississippi Goddam' and 'Feeling Good'",
-      answer: "Who is Nina Simone?",
+      clue: "This basketball legend from Wilmington won six NBA championships with the Chicago Bulls and is considered the greatest player of all time",
+      answer: "Who is Michael Jordan?",
       options: [
-        "Who is Roberta Flack?",
-        "Who is Aretha Franklin?",
-        "Who is Nina Simone?",
-        "Who is Dionne Warwick?"
+        "Who is Magic Johnson?",
+        "Who is Larry Bird?",
+        "Who is Michael Jordan?",
+        "Who is Kobe Bryant?"
       ],
       correct: 2
     },
     {
-      category: "REVOLUTIONARY WAR",
+      category: "REVOLUTIONARY CONFLICT",
       value: "$1200",
-      clue: "This October 1780 battle at a mountain straddling the NC-SC border was a turning point where Patriot militiamen defeated Loyalist forces",
-      answer: "What is the Battle of Kings Mountain?",
+      clue: "This February 1776 battle near Wilmington was the first major battle of the Revolutionary War in North Carolina, won by Patriot forces",
+      answer: "What is the Battle of Moore's Creek Bridge?",
       options: [
-        "What is the Battle of Cowpens?",
         "What is the Battle of Guilford Courthouse?",
         "What is the Battle of Kings Mountain?",
-        "What is the Battle of Moore's Creek Bridge?"
+        "What is the Battle of Moore's Creek Bridge?",
+        "What is the Battle of Ramseur's Mill?"
       ],
       correct: 2
     }
@@ -180,7 +184,8 @@ const NorthCarolinaTrivia = () => {
     setShowResult(true);
     
     if (index === questions[currentQuestion].correct) {
-      setScore(score + 1);
+      const questionValue = getValueAmount(questions[currentQuestion].value);
+      setScore(score + questionValue);
       setShowConfetti(true);
       playSound('correct');
       setTimeout(() => setShowConfetti(false), 3000);
@@ -684,18 +689,18 @@ const NorthCarolinaTrivia = () => {
           <div style={{ fontSize: '100px', marginBottom: '32px' }}>🏆</div>
           <h1 style={styles.completionTitle}>Game Complete!</h1>
           <div style={{ marginBottom: '40px' }}>
-            <p style={styles.scoreDisplay}>{score}</p>
+            <p style={styles.scoreDisplay}>${score.toLocaleString()}</p>
             <p style={styles.scoreSubtext}>Final Score</p>
             <p style={styles.messageText}>
-              You answered {score} questions correctly out of {totalQuestions} total!
+              You earned ${score.toLocaleString()} playing North Carolina Jeopardy!
             </p>
           </div>
           <p style={styles.messageText}>
-            {score >= 9 && "Incredible! You're a true North Carolina expert!"}
-            {score >= 7 && score < 9 && "Excellent work! You really know your NC history!"}
-            {score >= 5 && score < 7 && "Great job! You have solid knowledge of North Carolina!"}
-            {score >= 3 && score < 5 && "Good effort! These were challenging questions!"}
-            {score < 3 && "Nice try! North Carolina history is fascinating - keep learning!"}
+            {score >= 9000 && "Incredible! You're a true North Carolina expert!"}
+            {score >= 7000 && score < 9000 && "Excellent work! You really know your NC history!"}
+            {score >= 5000 && score < 7000 && "Great job! You have solid knowledge of North Carolina!"}
+            {score >= 3000 && score < 5000 && "Good effort! These were challenging questions!"}
+            {score < 3000 && "Nice try! North Carolina history is fascinating - keep learning!"}
           </p>
           <button
             onClick={resetGame}
@@ -728,11 +733,11 @@ const NorthCarolinaTrivia = () => {
               <p style={styles.subtitle}>Place Your Wager</p>
             </div>
             <div style={styles.wagerContainer}>
-              <h2 style={styles.wagerTitle}>Current Score: {score}</h2>
+              <h2 style={styles.wagerTitle}>Current Score: ${score.toLocaleString()}</h2>
               <p style={styles.wagerText}>
                 How much would you like to wager on the final question?
                 <br />
-                (You can wager between 0 and {score})
+                (You can wager between $0 and ${score.toLocaleString()})
               </p>
               <input
                 type="number"
@@ -741,6 +746,7 @@ const NorthCarolinaTrivia = () => {
                 value={wager}
                 onChange={(e) => setWager(Math.min(Math.max(0, parseInt(e.target.value) || 0), score))}
                 style={styles.wagerInput}
+                placeholder="Enter amount"
               />
               <br />
               <button
@@ -776,8 +782,8 @@ const NorthCarolinaTrivia = () => {
           </div>
 
           <div style={styles.progressBar}>
-            <div style={styles.progressText}>Wager: {wager}</div>
-            <div style={styles.progressText}>Current Score: {score}</div>
+            <div style={styles.progressText}>Wager: ${wager.toLocaleString()}</div>
+            <div style={styles.progressText}>Current Score: ${score.toLocaleString()}</div>
           </div>
 
           <div style={styles.questionCard}>
@@ -848,7 +854,7 @@ const NorthCarolinaTrivia = () => {
                   ...styles.resultText,
                   ...(finalAnswer === finalJeopardyQuestion.correct ? styles.correctText : styles.incorrectText)
                 }}>
-                  {finalAnswer === finalJeopardyQuestion.correct ? `✓ Correct! You won ${wager} points!` : `✗ Incorrect! You lost ${wager} points.`}
+                  {finalAnswer === finalJeopardyQuestion.correct ? `✓ Correct! You won $${wager.toLocaleString()}!` : `✗ Incorrect! You lost $${wager.toLocaleString()}.`}
                 </p>
                 {finalAnswer !== finalJeopardyQuestion.correct && (
                   <p style={styles.correctAnswerText}>
@@ -897,7 +903,7 @@ const NorthCarolinaTrivia = () => {
             Question {currentQuestion + 1} of {questions.length}
           </div>
           <div style={styles.progressText}>
-            Score: {score}/{questions.length}
+            Score: ${score.toLocaleString()}
           </div>
         </div>
 
