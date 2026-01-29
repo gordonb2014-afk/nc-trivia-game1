@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const NorthCarolinaTrivia = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0); // Now tracks dollar amounts
+  const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [showResult, setShowResult] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -14,9 +14,9 @@ const NorthCarolinaTrivia = () => {
   const [wagerSet, setWagerSet] = useState(false);
   const [finalAnswer, setFinalAnswer] = useState(null);
 
-  // Helper function to convert value string to number (e.g., "$800" -> 800)
   const getValueAmount = (valueString) => {
     return parseInt(valueString.replace('$', '').replace(',', ''));
+  };
 
   const questions = [
     {
@@ -172,9 +172,6 @@ const NorthCarolinaTrivia = () => {
 
   const playSound = (type) => {
     if (isMuted) return;
-    // Placeholder for sound effects
-    // const audio = new Audio(type === 'correct' ? '/sounds/correct.mp3' : '/sounds/incorrect.mp3');
-    // audio.play();
   };
 
   const handleAnswerClick = (index) => {
@@ -218,7 +215,6 @@ const NorthCarolinaTrivia = () => {
       setSelectedAnswer(null);
       setShowResult(false);
     } else {
-      // Move to Final Jeopardy
       setFinalJeopardy(true);
       setSelectedAnswer(null);
       setShowResult(false);
@@ -595,12 +591,6 @@ const NorthCarolinaTrivia = () => {
       fontSize: '26px',
       color: '#6b7280'
     },
-    percentageText: {
-      fontSize: '40px',
-      fontWeight: '600',
-      color: '#1e40af',
-      marginTop: '20px'
-    },
     messageText: {
       fontSize: '22px',
       color: '#374151',
@@ -681,7 +671,6 @@ const NorthCarolinaTrivia = () => {
   }, []);
 
   if (gameComplete) {
-    const totalQuestions = questions.length + 1; // Include Final Jeopardy
     return (
       <div style={styles.completionContainer}>
         <Confetti />
@@ -721,7 +710,6 @@ const NorthCarolinaTrivia = () => {
     );
   }
 
-  // Final Jeopardy Round
   if (finalJeopardy) {
     if (!wagerSet) {
       return (
@@ -770,7 +758,6 @@ const NorthCarolinaTrivia = () => {
       );
     }
 
-    // Final Jeopardy Question
     return (
       <div style={styles.container}>
         <div style={styles.backgroundPattern}></div>
@@ -869,7 +856,6 @@ const NorthCarolinaTrivia = () => {
     );
   }
 
-  // Regular Questions
   const question = questions[currentQuestion];
 
   return (
@@ -1005,3 +991,9 @@ const NorthCarolinaTrivia = () => {
 };
 
 export default NorthCarolinaTrivia;
+
+
+
+
+
+
